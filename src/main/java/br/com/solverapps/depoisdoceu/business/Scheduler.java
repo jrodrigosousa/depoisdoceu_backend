@@ -26,12 +26,14 @@ public class Scheduler {
                 new SendMessage(message),
                 message.getToSendDate().toInstant(ZoneOffset.of("-03:00")));
         tasks.add(task);
-        for(Notification notification: message.getNotifications()){
-            task = scheduler.schedule(
-                    new SendNotification(notification),
-                    notification.getToSendDate().toInstant(ZoneOffset.of("-03:00")));
-            tasks.add(task);
-        }
+        if(message.getNotifications()!=null)
+            if(!message.getNotifications().isEmpty())
+                for(Notification notification: message.getNotifications()){
+                    task = scheduler.schedule(
+                            new SendNotification(notification),
+                            notification.getToSendDate().toInstant(ZoneOffset.of("-03:00")));
+                    tasks.add(task);
+                }
         this.tasks.put(message, tasks);
     }
 
